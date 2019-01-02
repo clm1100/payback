@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+  </head>
+  <body>
+    <h1>
+        <a id="m" href="" target="_blank">点击</a>
+    </h1>
+    <div id="qrcode"></div>
+    <script src="/test/socket.io.js"></script>
+    <script src="/jquery.js"></script>
+    <script src="/qrcoder.js"></script>
+    <script>
+      $(function () {
+       
+        var socket = io({path:"/test"});
+        socket.on('uid',(data)=>{
+            $('#m').attr('href',`/payok/${data}`);
+            var http = $("#m").prop('href');
+            document.getElementById("qrcode").innerHTML = "";
+            new QRCode(document.getElementById("qrcode"), http);
+        });
+        socket.on('msg',(data)=>{
+            alert(data)
+        })
+
+      });
+    </script>
+  </body>
+</html>
